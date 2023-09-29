@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результат</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .result-container {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="result-container">
+        <h2>Ви ввели наступні дані:</h2>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var storedData = localStorage.getItem("inputData");
+            var outputElement = document.getElementById("output");
+            if (storedData) {
+                var inputData = JSON.parse(storedData);
+                outputElement.innerHTML = `
+                    <p><strong>ПІБ:</strong> ${inputData.pib}</p>
+                    <p><strong>Варіант:</strong> ${inputData.variant}</p>
+                    <p><strong>Телефон:</strong> ${inputData.phone}</p>
+                    <p><strong>Факультет:</strong> ${inputData.faculty}</p>
+                    <p><strong>Адреса:</strong> ${inputData.address}</p>
+                `;
+            } else {
+                outputElement.textContent = "Дані не знайдено.";
+            }
+        });
+    </script>
+</body>
+
+</html>

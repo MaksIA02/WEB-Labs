@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Таблиця</title>
+  <style>
+    td {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <label for="colorPicker">Виберіть колір:</label>
+  <input type="color" id="colorPicker">
+  <table id="table">
+  </table>
+
+  <script>
+    const table = document.getElementById('table');
+    const colorPicker = document.getElementById('colorPicker');
+
+    // Заповнення таблиці номерами від 1 до 36
+    let cellNumber = 1;
+    for (let i = 0; i < 6; i++) {
+      const row = document.createElement('tr');
+      for (let j = 0; j < 6; j++) {
+        const cell = document.createElement('td');
+        cell.textContent = cellNumber;
+        cellNumber++;
+        row.appendChild(cell);
+      }
+      table.appendChild(row);
+    }
+
+   // Зміна колірів при наведенні тільки комірки 7
+	table.addEventListener('mouseover', function(event) {
+		if (event.target.tagName === 'TD') {
+			if (event.target.textContent === '7') {
+      event.target.style.backgroundColor = getRandomColor();
+    }
+  }
+});
+
+// Зміна кольору при кліці на будь-якій комірці
+	table.addEventListener('click', function(event) {
+		if (event.target.tagName === 'TD') {
+    event.target.style.backgroundColor = colorPicker.value;
+  }
+});
+
+// Функція для генерації випадкового кольору
+	function getRandomColor() {
+	const letters = '0123456789ABCDEF';
+	let color = '#';
+	for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+   // Зміна кольору рядків при подвійному кліці
+let selectedRowIndex = null;
+table.addEventListener('dblclick', function(event) {
+  if (event.target.tagName === 'TD') {
+    const clickedRowIndex = event.target.parentElement.rowIndex;
+    if (selectedRowIndex !== null) {
+      changeRowColor(table.rows[selectedRowIndex]);
+    }
+    changeRowColor(table.rows[clickedRowIndex]);
+	 changeRowColor(table.rows[clickedRowIndex + 2]);
+    selectedRowIndex = clickedRowIndex;
+  }
+});
+
+function changeRowColor(row) {
+  for (let i = 0; i < row.cells.length; i++) {
+    row.cells[i].style.backgroundColor = colorPicker.value;
+  }
+}
+
+
+  </script>
+</body>
+</html>
