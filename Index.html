@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #usersContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px; /* Відстань між елементами всередині контейнера */
+        }
+
+        .userCard {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .userCard img {
+                border-radius: 50%;
+                margin-bottom: 10px;
+            }
+
+        button {
+            margin-top: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+    </style>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Випадкові користувачі</title>
+</head>
+
+<body>
+    <div id="usersContainer">
+        <!-- Сюди буде вставлено інформацію про користувачів -->
+    </div>
+    <button id="loadUsersBtn">Завантажити інформацію про користувачів</button>
+
+    <script>
+        // Вставте JavaScript-код тут
+        const usersContainer = document.getElementById('usersContainer');
+        const loadUsersBtn = document.getElementById('loadUsersBtn');
+
+        function fetchRandomUsers() {
+            // Очищаємо контейнер перед завантаженням нових користувачів
+            usersContainer.innerHTML = '';
+
+            // Отримуємо інформацію про 5 користувачів
+            for (let i = 1; i < 6; i++) {
+                fetch('https://randomuser.me/api')
+                    .then(response => response.json())
+                    .then(data => {
+                        const user = data.results[0];
+                        const picture = user.picture.large;
+                        const cell = user.cell;
+                        const city = user.location.city;
+                        const postcode = user.location.postcode;
+                        const email = user.email;
+
+                        // Створюємо DOM-елемент для кожного користувача та виводимо інформацію
+                        const userDiv = document.createElement('div');
+                        userDiv.innerHTML = `
+                                <h2>Користувач ${i} </h2>
+                                <img src="${picture}" alt="Користувач">
+                                <p><strong>Мобільний телефон:</strong> ${cell}</p>
+                                <p><strong>Місто:</strong> ${city}</p>
+                                <p><strong>Поштовий індекс:</strong> ${postcode}</p>
+                                <p><strong>Email:</strong> ${email}</p>
+                            `;
+                        usersContainer.appendChild(userDiv);
+                    })
+                    .catch(error => {
+                        console.error('Помилка отримання даних:', error);
+                    });
+            }
+        }
+
+        // Додаємо обробник подій для кнопки
+        loadUsersBtn.addEventListener('click', fetchRandomUsers);
+    </script>
+</body>
+
+</html>
